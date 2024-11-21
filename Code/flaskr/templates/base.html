@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Ouverture de page</title>
+        <style>
+            body{
+                white-space: pre-line;
+            }
+            .form-load {
+                display: flex;
+                flex-direction: column; /* Aligne les éléments en colonne */
+                height: 100%; /* Prend toute la hauteur disponible */
+            }
+            div.conteneur{
+                width: 100%;
+            }
+            div.conteneur div{
+                width: 50%;
+                float: left;
+            }
+            .template-header {
+                clear: both;
+                display: flex; /* Permet de mettre les éléments en ligne */
+                align-items: center; /* Aligne verticalement le titre et le bouton */
+                justify-content: space-between; 
+                background-color: lightgrey;
+            }
+            .template-header h3 {
+                margin: 0; /* Supprime la marge par défaut du h3 */
+            }
+            .template-header button {
+                margin-left: 10px; 
+            }
+            .input-container {
+                clear: both;
+            }
+            button[type="submit"] {
+                margin-top: auto; /* Met le bouton en bas de la page */
+                align-self: flex-start; /* Aligne le bouton en haut à gauche */
+            }
+            .content-file {
+                margin: 0;
+            }
+                        
+        </style>
+    </head>
+
+    <body>
+        <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required/>
+            <label for="templates"> Nombre de template à ajouter : </label>
+            <input type="number" name="templates" id="templates" value="1" required>
+            <button type="submit">Ajouter</button>
+        </form>
+
+        <form action="{{ url_for('import_file') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required/>
+            
+            <label for="Network">Choisir un réseau :</label>
+            <select name="Network" id="Network">
+                {% for folder in folders %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Importer</button>
+        </form>
+        
+
+        <div class="conteneur">
+            <div id="fieldsContainer">
+                {% block inputs %}
+                {% endblock %}
+            </div>
+            <div>
+                <p id="textBrut"></p>
+                {% block text %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+
+</html>

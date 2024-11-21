@@ -1,0 +1,11 @@
+sysname ${HOSTNAME}
+sysname ${HOSTNAME2}
+sysname ${HOSTNA}
+sysname ${HOSTNAME4}
+sysname ${HOSTNA}
+sysname ${HOSTNAME6}
+sysname ${HOST}
+sysname ${HOSTNAME8}
+sysname ${HOSTNAMsss}
+sysname ${HOSTNAME10}
+sysname ${HOSTNAME12}

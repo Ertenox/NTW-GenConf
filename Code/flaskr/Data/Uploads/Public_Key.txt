@@ -1,0 +1,18 @@
+#Modele : Public Key (Member X)
+#Version : 3.0
+#Edition : 1
+#Date : 15/02/2021
+
+#
+${_MODE_CLI_}system-view
+#
+public-key local create dsa
+y
+2048
+#
+public-key local create rsa
+y
+2048
+#
+${_MODE_CLI_}return
+#

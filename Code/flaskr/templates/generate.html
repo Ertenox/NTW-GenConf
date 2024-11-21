@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block text %}
+    <p id="text_brut">{{ text }}</p>
+    <a href="{{ url_for('download') }}" class="btn">Télécharger</a> <a href="{{ url_for('export') }}" class="btn">Exporter</a>
+{% endblock %}
+
+{% block inputs %}
+{% endblock %}
