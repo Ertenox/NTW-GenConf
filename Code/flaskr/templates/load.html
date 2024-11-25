@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block inputs %}
+
     <form class="form-load" action="{{ url_for('complete_file') }}" method="POST">
         {% for key, template in templates.items() %}
             <div class="template-header">
@@ -16,10 +17,17 @@
                 <button type="submit" formaction="{{ url_for('delete_file', key=key) }}">Supprimer</button>
             </div>
             <div class="input-container">
-                {% for var in template.getAllVar() %}
-                    <label for="{{ var }}">{{ var }} : </label>
-                    <input type="text" name="{{ key }}_{{ var }}" id="{{ key }}_{{ var }}" placeholder="Entrez une valeur pour {{ var }}" >
-                {% endfor %}
+                {% if template.imported %}
+                    {% for var, value in (template.getDict()).items() %}
+                        <label for="{{ var }}">{{ var }} : </label>
+                        <input type="text" name="{{ key }}_{{ var }}" id="{{ key }}_{{ var }}" placeholder="Entrez une valeur pour {{ var }}" value="{{ value }}">
+                    {% endfor %}
+                {% else %}
+                    {% for var in template.getDict() %}
+                        <label for="{{ var }}">{{ var }} : </label>
+                        <input type="text" name="{{ key }}_{{ var }}" id="{{ key }}_{{ var }}" placeholder="Entrez une valeur pour {{ var }}" >
+                    {% endfor %}
+                {% endif %}
             </div>
         {% endfor %}
         <button type="submit" class="submit">Soumettre</button>

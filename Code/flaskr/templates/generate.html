@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
 {% block text %}
+    <form class="form-button" action="{{ url_for('complete_file')}}" method="GET">
+        <input type="radio" id="File" value="File" name="type" onchange="this.form.submit()">
+        <label for="html">File</label>
+        <input type="radio" id="CLI" value="Cli" name="type" onchange="this.form.submit()" >
+        <label for="css">CLI</label>
+    </form>
     <p id="text_brut">{{ text }}</p>
-    <a href="{{ url_for('download') }}" class="btn">Télécharger</a> <a href="{{ url_for('export') }}" class="btn">Exporter</a>
+    <a href="{{ url_for('download_Cli') }}" class="btn">Télécharger Cli</a> <a href="{{url_for('download_File')}}" class="btn">Télécharger File</a> <a href="{{ url_for('export') }}" class="btn">Exporter</a>
 {% endblock %}
 
 {% block inputs %}
