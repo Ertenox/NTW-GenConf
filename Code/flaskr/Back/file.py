@@ -6,23 +6,16 @@ class File:
     def __init__(self):
         pass
         
-    def addTemplate(self,input):
+    def addTemplate(self,content, title):
         """fonction pour ouvrir un fichier en mode lecture et retourner son contenu"""
-        try:
-            file = open(input, "r")
-            content = file.read()
-            title = file.name
-            file.close()
-
-            self.templates[uuid.uuid4()] = Template(title, content=content)
-        except:
-            return "Error: File not found"
+        id = uuid.uuid4()
+        self.templates[id] = Template(title, content=content)
+        self.templates[id].findAllVar()
         
     def removeTemplate(self, key):
         """supprime un template du dictionnaire"""
         self.templates.pop(key)
         
-
     def clear(self):
         """vide le dictionnaire de templates"""
         self.templates = {}
@@ -31,21 +24,10 @@ class File:
         """retourne le titre et le contenu du template"""
         return self.templates[key].title, self.templates[key].content
         
-    def getAllTemplate(self):
+    def getAllTemplates(self):
         for key in self.templates:
             print(key, self.getTemplate(key))
-
-    
-    def generateInput(self):
-        """génère les inputs pour les variables"""
-        for key in self.templates.keys():
-            template = self.templates[key]
-            template.findAllVar()
-            allVar = template.getAllVar()
-            for var in allVar:
-                value = input("Tmplt : "+key+" | Enter value for "+var+" : ")
-                template.setVar(var, value)
-
+  
     def replaceVars(self):
         """remplace les variables par leur valeur saisie"""
         for key in self.templates.keys():
@@ -57,19 +39,30 @@ class File:
         for key in self.templates.keys():
             str += self.templates[key].getOutContent() +'\n'
         return str
+
+    def getAllOutContentCli(self) -> str:
+        str = self.getAllOutContent()
+        str = str.replace("${_MODE_CLI_}", "")
+        return str
     
+    def getAllOutContentFile(self) -> str:
+        str_content = self.getAllOutContent()
+        lines = str_content.splitlines()
+        filtered_lines = [line for line in lines if "MODE_CLI" not in line] #On parcourt toutes les lignes et si "MODE_CLI" est present on ne la garde pas
+        strOut = "\n".join(filtered_lines)
+        return strOut
+
     def sort(self):
         """trie le dictionnaire de templates en fonctions du nom du fichier"""
         self.templates = dict(sorted(self.templates.items(), key=lambda x: x[1].title))
 
-    def checkIntemplate(self, key) -> bool:
+    def checkInTemplate(self, key) -> bool:
         """vérifie si une variable est présente dans le template"""
-        print(key, self.templates)
         if key in self.templates:
             return True
         else:   
             return False
-
+        
     def dictToJson(self) -> str:
         """Assemble les différents templates dans un seul fichier .ske au format JSON"""
         data = []        
@@ -95,13 +88,13 @@ class File:
         for template in templates:
             title = template["name"]
             #Ouvrir le fichier stocke dans /DATA/r1/name.txt
-            content_file = open(f"DATA/{folder}/{title}", "r").read()
+            content_file = open(f"DATA/Networks/{folder}/{title}", "r").read()
             if template["sub_templates"]:
                 temp = {}
                 for var, value in template["variables"].items():
                     temp[var] = value
-            self.templates[uuid.uuid4()] = Template(title,content=content_file, dict=temp)
-        return self.templates        
+            self.templates[uuid.uuid4()] = Template.fromJson(title,content=content_file, dict=temp)
+        return self.templates         
 
         
 

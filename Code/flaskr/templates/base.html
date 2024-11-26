@@ -11,6 +11,10 @@
                 flex-direction: column; /* Aligne les éléments en colonne */
                 height: 100%; /* Prend toute la hauteur disponible */
             }
+            .form-button {
+                display: flex;
+                align-items: center;    
+            }
             div.conteneur{
                 width: 100%;
             }
@@ -69,6 +73,7 @@
 
         <div class="conteneur">
             <div id="fieldsContainer">
+                
                 {% block inputs %}
                 {% endblock %}
             </div>
