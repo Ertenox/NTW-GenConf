@@ -6,24 +6,16 @@ class File:
     def __init__(self):
         pass
         
-    def addTemplate(self,input):
+    def addTemplate(self,content, title):
         """fonction pour ouvrir un fichier en mode lecture et retourner son contenu"""
-        try:
-            file = open(input, "r")
-            content = file.read()
-            title = file.name
-            file.close()
-            tmpId = uuid.uuid4()
-            self.templates[tmpId] = Template(title, content=content)
-            self.templates[tmpId].findAllVar()
-        except:
-            return "Error: File not found"
+        id = uuid.uuid4()
+        self.templates[id] = Template(title, content=content)
+        self.templates[id].findAllVar()
         
     def removeTemplate(self, key):
         """supprime un template du dictionnaire"""
         self.templates.pop(key)
         
-
     def clear(self):
         """vide le dictionnaire de templates"""
         self.templates = {}
@@ -95,15 +87,14 @@ class File:
         templates = json.loads(data)
         for template in templates:
             title = template["name"]
-            imported = True
             #Ouvrir le fichier stocke dans /DATA/r1/name.txt
             content_file = open(f"DATA/Networks/{folder}/{title}", "r").read()
             if template["sub_templates"]:
                 temp = {}
                 for var, value in template["variables"].items():
                     temp[var] = value
-            self.templates[uuid.uuid4()] = Template(title,content=content_file, dict=temp, imported=imported)
-        return self.templates        
+            self.templates[uuid.uuid4()] = Template.fromJson(title,content=content_file, dict=temp)
+        return self.templates         
 
         
 

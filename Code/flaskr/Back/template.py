@@ -2,13 +2,17 @@ import re
 
 class Template:
 
-    def __init__(self, title, content = "", dict = {}, imported = False):
+    def __init__(self, title, content = ""):
         self.title = title.split('\\')[-1]
         self.content = content
-        self.imported = imported
-        self.__dict = dict
         self.__outContent = ""
-        print("appelle de __init__ pour le template", self.title, "les variables sont", self.__dict)
+        self.__dict = {}
+
+    @staticmethod
+    def fromJson(title, content, dict):
+        template = Template(title, content)
+        template.__dict = dict
+        return template
 
     def findAllVar(self):
         temp = re.findall(r"\$\{([^}]+)\}", self.content)

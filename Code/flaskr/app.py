@@ -30,10 +30,10 @@ def upload_file():
         numberTemplates = request.form.get("templates")
         if uploaded_file:
             if allowed_file(uploaded_file.filename, "txt"): # On vérifie qu'il s'agit d'un fichier txt
-                uploaded_file.save(os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)) # On sauvegarde le fichier
-                for i in range(int(numberTemplates)):
-                    file_manager.addTemplate(os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)) # On ajoute le fichier au gestionnaire de fichiers
-                #file_manager.sort() # On trie les fichiers dans l'ordre alphabétique
+                file_content = uploaded_file.read().decode("utf-8")
+                for _ in range(int(numberTemplates)):
+                    file_manager.addTemplate(file_content, uploaded_file.filename) # On ajoute le fichier au gestionnaire de fichiers
+                file_manager.sort() # On trie les fichiers dans l'ordre alphabétique
                 print("Fichier ajouté")
             else:
                 print("Le fichier doit être au format .txt")
@@ -72,7 +72,7 @@ def complete_file():
     if request.method == "POST":
         for key in file_manager.templates.keys(): # Pour chaque clé dans le dictionnaire de templates
             template = file_manager.templates[key] # On recupère le template associé
-            allVar = template.getAllVar()
+            allVar = template.getDict()
             for var in allVar:
                 value = request.form.get(str(key)+"_"+var) # On récupère la valeur associée à la clé et à la variable
                 template.setVar(var, value) # On stocke la valeur saisie
