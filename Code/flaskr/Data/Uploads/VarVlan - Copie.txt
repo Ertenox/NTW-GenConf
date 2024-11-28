@@ -1,0 +1,1 @@
+{"HOSTNAME":"Test","HOST":"Youpi","HOSTNAME2":"KO"}

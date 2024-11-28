@@ -1,0 +1,174 @@
+def vlan_sheet_params()
+{
+	return ["Vlans", "A", "V", 2]
+}
+
+def header_labels()
+{
+	return ["Distribution", "Nom VRF", "N° VRF", "Nom Vlan (RADIUS)", "N°", "Description", 
+			"Type", "DHCP", "Sous-réseau", "CIDR", "GW", "Authentification", "Agrégat Distrib", 
+			"Groupe DHCP IPv4", "PES", "Module SD", "Génération Auto", "Mode DHCPv6", 
+			"Sous-réseau IPv6", "Préfixe", "Srv DHCP IPv6", "Informations"]
+}
+
+def cell_content_regexes()
+{
+	return ["G":"^Local|Etendu$",
+			"H":"^Oui|Non$",
+			"R":"^StateLess|StateFul|NA$",
+			"P":"^Oui|Non|NA$",
+			"I":"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+			"J":"^(16|19|2[0-9]|30)$",
+			"K":"^|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+			"S":"^|((.{4}:){2,3}.{2, 4}:{2})|N/A$",
+			"T":"^|\\d+$|N/A",
+			"M":"^|N/A|[,0-9]+$",
+			"N":"^|N/A|\\d+$"]
+}
+
+def cell_incompatible_values()
+{
+	return [["H","Oui","N","N/A"]]
+}
+
+def vlan_type_column_local_extended()
+{
+	return ["G", "Local", "Etendu"]
+}
+
+def ignore_line(row)
+{
+	return row.cell_text("Q") != "Oui"
+}
+
+def ignore_line_for_access_configuration(row)
+{
+	return false
+}
+
+def ignore_line_for_distribution_configuration(row)
+{
+	return false
+}
+
+def get_template_row_flags(row)
+{
+	return ["IPv6":false,
+			"STATELESS":row.cell_text("R")=="StateLess",
+			"STATEFULL":row.cell_text("R")=="StateFull"]
+}
+
+def get_access_vlan_template(row)
+{
+	return "31 - Ajt Vlan Autres (Member X).txt"
+}
+
+def get_access_vlan_variables(row)
+{
+	return ["VLAN_NAME":row.cell_text("D"),
+			"VLAN_ID":row.cell_text("E"),
+			"DESCRIPTION":row.cell_text("F")]
+}
+
+def get_distribution_vlan_template(row)
+{
+	if(row.cell_text("A") != "Serveurs")
+	{
+		if(row.cell_text("B") == "VOICE")
+		{
+			return "02 - Distribution\\54 - Ajt Vlan Local Voice Avec DHCP (Member X).txt"
+		}
+		else
+		{
+			if(row.cell_text("G") == "Local")
+			{
+				if(row.cell_text("H") == "Oui")
+				{
+					return "02 - Distribution\\51 - Ajt Vlan Local Avec DHCP (Member X).txt"
+				}
+				else
+				{
+					return "02 - Distribution\\50 - Ajt Vlan Local Sans DHCP (Member X).txt"
+				}
+			}
+			else
+			{
+				if(row.cell_text("H") == "Oui")
+				{
+					return "02 - Distribution\\53 - Ajt Vlan Etendu Avec DHCP (Member X).txt"
+				}
+				else
+				{
+					return "02 - Distribution\\52 - Ajt Vlan Etendu Sans DHCP (Member X).txt"
+				}
+			}
+		}
+	}
+	else
+	{
+		if(row.cell_text("G") == "Local")
+		{
+			if(row.cell_text("H") == "Oui")
+			{
+				return "02 - Distribution\\51 - Ajt Vlan Local Avec DHCP (Member X).txt"
+			}
+			else
+			{
+				return "02 - Distribution\\50 - Ajt Vlan Local Sans DHCP (Member X).txt"
+			}
+		}
+	}
+
+	return ""
+}
+
+def get_distribution_vlan_variables(row, dhcp_relay, dhcp6_relay)
+{
+	return ["AGG_NUMBER":row.cell_text("M"),
+			"AS_NUMBER":"65534",
+			"DESCRIPTION":row.cell_text("F"),
+			"DHCP_SRV_@IP":dhcp_relay,
+			"DHCP_SRV_@IPv6":dhcp6_relay,
+			"INSTANCE":row.cell_text("B"),
+			"INT_@IPv6":row.cell_text("S")+"1",
+			"INT_@IP":gateway_address(row.cell_text("I"), row.cell_text("J"), row.cell_text("K")),
+			"INT_MASK":net_mask(row.cell_text("J")),
+			"INT_PREFIX":row.cell_text("T"),
+			"INT_SUBNETv6":row.cell_text("S"),
+			"INT_SUBNET":row.cell_text("I"),
+			"VLAN_ID":row.cell_text("E")]
+}
+
+def dhcp_params()
+{
+	return ["N", ["Relay-Group DHCP", "B", "D", 1]]
+}
+
+def get_additional_dhcp_relay_template(row)
+{
+	return "02 - Distribution\\55 - Ajt DHCP Relay (Member X).txt"
+}
+
+def get_additional_dhcp_relay_variables(row, dhcp_relay)
+{
+	return ["INSTANCE":row.cell_text("B"),
+			"DHCP_SRV_@IP":dhcp_relay,
+			"VLAN_ID":row.cell_text("E")]
+}
+
+def dhcp6_params()
+{
+	return ["U", ["Data", "B", "C"]]
+}
+
+def get_additional_dhcp6_relay_template(row)
+{
+	return "02 - Distribution\\56 - Ajt DHCPv6 Relay (Member X).txt"
+}
+
+def get_additional_dhcp6_relay_variables(row, dhcp6_relay)
+{
+	return ["INSTANCE":row.cell_text("B"),
+			"DHCP_SRV_@IP":dhcp6_relay,
+			"VLAN_ID":row.cell_text("E")]
+}

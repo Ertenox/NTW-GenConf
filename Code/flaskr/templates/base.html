@@ -69,17 +69,15 @@
             
             <button type="submit">Importer</button>
         </form>
-        
+
+        <form action="{{ url_for('generate_patch') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required/>
+            <button type="submit">Générer</button>
+        </form>
 
         <div class="conteneur">
-            <div id="fieldsContainer">
-                
-                {% block inputs %}
-                {% endblock %}
-            </div>
-            <div>
-                <p id="textBrut"></p>
-                {% block text %}
+            <div >
+                {% block content %}
                 {% endblock %}
             </div>
         </div>

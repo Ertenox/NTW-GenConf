@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <form action="{{ url_for('generate_patch') }}" method="POST" >
+            <input type="radio" id="Access" value="Access" name="Switch_type"><label for="html">Access</label>
+            <input type="radio" id="Distrib" value="Distrib" name="Switch_type"><label for="css">Distrib</label>
+            <select name="Distribution" id="Distribution" onchange="this.form.submit()">        
+                {% for dist in distribution_list %}
+                    <option value="{{ dist }}">{{ dist }}</option>
+                {% endfor %}
+            </select>
+    </div>
+    <div>
+        <p id="textBrut"></p>
+        <form class="form-button" action="{{ url_for('complete_file')}}" method="GET">
+            <input type="radio" id="File" value="File" name="type" onchange="this.form.submit()"><label for="html">File</label>
+            <input type="radio" id="CLI" value="Cli" name="type" onchange="this.form.submit()" ><label for="css">CLI</label>
+        </form>
+        <p id="text_brut">{{ text }}</p>
+        <a href="{{ url_for('download_Cli') }}" class="btn">Télécharger</a>
+    </div>
+
+{% endblock %}

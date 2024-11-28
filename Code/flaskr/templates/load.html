@@ -1,14 +1,28 @@
 {% extends "base.html" %}
 
-{% block text %}
-    <p class="content-file" id="text_brut">
-        {% for template in templates.values() %}
-            {{ template.content }}
-        {% endfor %}
-    </p>
-{% endblock %}
 
-{% block inputs %}
+{% block content %}
+<div>
+    <p id="textBrut"></p>
+        <p class="content-file" id="text_brut">
+            {% for template in templates.values() %}
+                {{ template.content }}
+            {% endfor %}
+        </p>
+    {% endblock %}
+</div>
+</div id="fieldsContainer">
+    <form action="{{ url_for('update_file') }}" method="POST" enctype="multipart/form-data">
+        <select name="key" id="key">        
+            {% for key, template in templates.items() %}
+                {% if template.getDict() != {} %}
+                    <option value="{{ key }}">{{ template.title }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <input type="file" name="file" required/>
+        <button type="submit">Importer</button>
+    </form>
 
     <form class="form-load" action="{{ url_for('complete_file') }}" method="POST">
         {% for key, template in templates.items() %}
@@ -32,4 +46,6 @@
         {% endfor %}
         <button type="submit" class="submit">Soumettre</button>
     </form>
+</div>
+
 {% endblock %}

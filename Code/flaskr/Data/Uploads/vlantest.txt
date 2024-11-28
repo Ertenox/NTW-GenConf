@@ -1,2 +1,20 @@
-vlan ${Id}
-vlan ${HOSTNAME}
+#Modele  : Ajt Vlan (Member X)
+#Version : 3.0
+#Edition : 1
+#Date    : 15/02/2021
+
+#
+system-view
+#
+vlan ${VLAN_ID}
+name ${VLAN_NAME}
+ description ${Description}
+ undo arp detection enable
+ undo arp snooping enable
+#
+interface bridge-aggregation 1
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 2
+ port trunk permit vlan ${VLAN_ID}
+ 
