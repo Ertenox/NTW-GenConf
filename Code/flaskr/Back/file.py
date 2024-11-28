@@ -23,10 +23,6 @@ class File:
     def getTemplate(self, key) -> str:
         """retourne le titre et le contenu du template"""
         return self.templates[key].title, self.templates[key].content
-        
-    def getAllTemplates(self):
-        for key in self.templates:
-            print(key, self.getTemplate(key))
   
     def replaceVars(self):
         """remplace les variables par leur valeur saisie"""
@@ -82,21 +78,24 @@ class File:
             data.append(template_data)
         return json.dumps(data, indent=4)
     
-    def jsonToDict(self, data, folder):
-        """Transforme un fichier .ske au format JSON en dictionnaire de templates"""
-        templates = json.loads(data)
+    def jsonToDict(self, templates, folder) -> dict:
+        """Transforme une liste de dictionnaire (JSON) en dictionnaire d'objet de type templates"""
         for template in templates:
+            temp = {}
             title = template["name"]
-            #Ouvrir le fichier stocke dans /DATA/r1/name.txt
-            content_file = open(f"DATA/Networks/{folder}/{title}", "r").read()
+            content_file = open(f"DATA/{folder}/{title}", "r").read()
             if template["sub_templates"]:
-                temp = {}
                 for var, value in template["variables"].items():
+                    var = re.findall(r"\$\{([^}]+)\}", var)[0]
                     temp[var] = value
             self.templates[uuid.uuid4()] = Template.fromJson(title,content=content_file, dict=temp)
         return self.templates         
 
-        
-
+    def importVar(self,key,file):
+        """fonction pour importer les variables d'un fichier"""
+        self.templates[key].imported = True
+        json_data = json.loads(file)
+        for var in json_data:
+            self.templates[key].setVar(var,json_data[var])
 
     

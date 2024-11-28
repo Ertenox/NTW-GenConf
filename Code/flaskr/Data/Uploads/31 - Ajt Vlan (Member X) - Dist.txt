@@ -1,0 +1,156 @@
+#Modele  : Ajt Vlan (Member X)
+#Version : 3.0
+#Edition : 1
+#Date    : 15/02/2021
+
+#
+${_MODE_CLI_}system-view
+#
+vlan ${VLAN_ID}
+ description ${DESCRIPTION}
+ undo arp detection enable
+ undo arp snooping enable
+#
+interface bridge-aggregation 1
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 2
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 3
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 4
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 5
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 6
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 7
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 8
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 9
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 10
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 11
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 12
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 13
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 14
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 15
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 16
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 17
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 18
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 19
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 20
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 21
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 22
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 23
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 24
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 33
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 34
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 35
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 36
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 37
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 38
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 39
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 40
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 41
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 42
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 43
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 44
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 45
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 46
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 47
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 48
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 49
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 50
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 51
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 52
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 53
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 54
+ port trunk permit vlan ${VLAN_ID}
+#
+interface bridge-aggregation 100
+ port trunk permit vlan ${VLAN_ID}
+#
+${_MODE_CLI_}return
+#

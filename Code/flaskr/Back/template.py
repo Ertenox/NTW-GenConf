@@ -7,11 +7,13 @@ class Template:
         self.content = content
         self.__outContent = ""
         self.__dict = {}
+        self.imported = False
 
     @staticmethod
     def fromJson(title, content, dict):
         template = Template(title, content)
         template.__dict = dict
+        template.imported = True
         return template
 
     def findAllVar(self):
@@ -21,8 +23,7 @@ class Template:
         for var in temp:
             if var != "_MODE_CLI_":
                 self.__dict[var] = ""
-        
-    
+         
     def setVar(self, var, value):
         print("appelle de setVar pour le template", self.title, "la variable est", var, "la valeur est", value)
         if var in self.__dict:
@@ -35,17 +36,11 @@ class Template:
         self.__outContent = self.content
         for i in self.__dict:
             if self.__dict[i] != "":
-                self.__outContent = re.sub(r"\$\{"+i+r"\}", self.__dict[i], self.__outContent)
-
+                self.__outContent = re.sub(r"\$\{"+i+r"\}", str(self.__dict[i]), self.__outContent)
+            
     def getDict(self) -> dict:
-        print("appelle de getDict pour ", self.title, "les variables sont", self.__dict)    
         return self.__dict
 
     def getOutContent(self) -> str:
         return self.__outContent
     
-  
-    
-
-    
-

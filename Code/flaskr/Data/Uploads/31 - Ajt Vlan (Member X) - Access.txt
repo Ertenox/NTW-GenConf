@@ -1,0 +1,22 @@
+#Modele  : Ajt Vlan (Member X)
+#Version : 3.0
+#Edition : 1
+#Date    : 15/02/2021
+
+#
+${_MODE_CLI_}system-view
+#
+vlan ${VLAN_ID}
+ name ${VLAN_NAME}
+ description ${DESCRIPTION}
+ arp detection enable
+ undo arp snooping enable
+ igmp-snooping enable
+ igmp-snooping drop-unknown
+ igmp-snooping version 3
+#
+interface bridge-aggregation 1
+ port trunk permit vlan ${VLAN_ID}
+#
+${_MODE_CLI_}return
+#
